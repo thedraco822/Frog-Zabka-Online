@@ -1,15 +1,17 @@
 # Pakiet Frog - Żabka Online
 
 ## Opis
-Pakiet Frog to aplikacja do zarządzania sklepem online Żabka. Umożliwia zarządzanie produktami, klientami oraz zakupami. Zawiera Partyjnie zawiera interfejs graficzny, system rabatowy, podgląd danych, statystyki produktów, historię zakupów oraz dokumentację.
+Pakiet Frog to aplikacja do zarządzania sklepem online Żabka, umożliwiająca zarządzanie produktami, klientami oraz zakupami. Aplikacja zawiera intuicyjny interfejs graficzny, system rabatowy, podgląd danych, statystyki produktów, historię zakupów oraz aktualizację stanów magazynowych po zakupach. Ostatnia aktualizacja: 18 maja 2025, 23:48 CEST.
 
 ## Struktura
-- `main.py`: Główny moduł uruchamiający aplikację.
-- `product_management.py`: Moduł zarządzania produktami (dodawanie, usuwanie, statystyki).
-- `customer_management.py`: Moduł zarządzania klientami (rejestracja, usuwanie, zakupy).
-- `utils.py`: Funkcje pomocnicze (logowanie, rabaty).
-- `gui.py`: Interfejs graficzny.
-- `database/`: Folder z danymi (products.xlsx, customer.csv, DATABASE/).
+- `main.py`: Główny moduł uruchamiający aplikację z wyborem roli (Admin/Użytkownik).
+- `product_management.py`: Moduł zarządzania produktami (dodawanie, usuwanie, statystyki, sprawdzanie dostępności, aktualizacja stanów magazynowych).
+- `projekt_customers.py`: Moduł zarządzania klientami (rejestracja, usuwanie, zakupy z aktualizacją stanów).
+- `utils.py`: Funkcje pomocnicze (logowanie akcji, obliczanie rabatów).
+- `gui.py`: Interfejs graficzny dla roli Admin.
+- `user_gui.py`: Interfejs graficzny dla roli Użytkownik.
+- `role_selection.py`: Moduł wyboru roli użytkownika.
+- `database/`: Folder z danymi (products.xlsx, customer.csv, DATABASE/ z historią zakupów).
 
 ## Wymagania
 - Python 3.8+
@@ -21,12 +23,13 @@ Pakiet Frog to aplikacja do zarządzania sklepem online Żabka. Umożliwia zarz�
 3. Uruchom aplikację: `python main.py`
 
 ## Funkcjonalności
-- Dodawanie i usuwanie produktów oraz klientów
-- Zakup wielu produktów z rabatem
-- Statystyki produktów (min, max, średnia cena i stan magazynowy)
-- Historia zakupów klientów
-- Sprawdzenie dostępności produktu
-- Interfejs graficzny z podglądem produktów i klientów
+- **Zarządzanie produktami**: Dodawanie i usuwanie produktów, podgląd, statystyki (min, max, średnia cena i stan magazynowy).
+- **Zarządzanie klientami**: Rejestracja, usuwanie, logowanie.
+- **Zakupy**: Dodawanie produktów do koszyka, zakup z uwzględnieniem rabatów, automatyczna aktualizacja stanów magazynowych po zakupie.
+- **Statystyki produktów**: Wyświetlanie minimalnej, maksymalnej i średniej ceny oraz stanu magazynowego.
+- **Historia zakupów**: Przeglądanie zapisanej historii zakupów dla każdego klienta.
+- **Sprawdzenie dostępności**: Weryfikacja dostępności produktów przed zakupem.
+- **Interfejs graficzny**: Intuicyjne GUI dla obu ról z podglądem produktów i klientów.
 
 ## Autorzy
 - Karol Filipkowski: Koordynacja, GUI, moduł główny

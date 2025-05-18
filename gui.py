@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import messagebox, ttk
 import pandas as pd
 
-
 def create_gui(root: tk.Tk, add_product, remove_product, register_customer, remove_customer, get_product_stats, check_product_availability):
     """
     Tworzy interfejs graficzny dla aplikacji.
@@ -61,14 +60,13 @@ def create_gui(root: tk.Tk, add_product, remove_product, register_customer, remo
 
     def register_customer_gui():
         try:
-            customer_data = {
-                "name": entry_customer_name.get().strip(),
-                "surname": entry_customer_surname.get().strip()
-            }
-            if not customer_data["name"] or not customer_data["surname"]:
-                messagebox.showerror("Błąd", "Imię i nazwisko klienta nie mogą być puste.")
+            name = entry_customer_name.get().strip()
+            email = entry_customer_email.get().strip()
+            phone = entry_customer_phone.get().strip() or None
+            if not name or not email:
+                messagebox.showerror("Błąd", "Imię i e-mail klienta nie mogą być puste.")
                 return
-            customer_id = register_customer("database/customer.csv", customer_data)
+            customer_id = register_customer(name, email, phone)
             if customer_id:
                 messagebox.showinfo("Sukces", f"Zarejestrowano klienta z ID: {customer_id}")
             else:
@@ -86,12 +84,9 @@ def create_gui(root: tk.Tk, add_product, remove_product, register_customer, remo
             if not customer_id and not customer_name:
                 messagebox.showerror("Błąd", "Proszę podać ID lub imię klienta.")
                 return
-            if customer_id:
-                success = remove_customer("database/customer.csv", customer_id, by="id")
-                criterion = f"ID {customer_id}"
-            else:
-                success = remove_customer("database/customer.csv", customer_name, by="name")
-                criterion = f"imieniu {customer_name}"
+            identifier = customer_id or customer_name
+            success = remove_customer(identifier)
+            criterion = f"ID {customer_id}" if customer_id else f"nazwie {customer_name}"
             if success:
                 messagebox.showinfo("Sukces", f"Klient usunięty na podstawie {criterion}!")
             else:
@@ -120,19 +115,6 @@ def create_gui(root: tk.Tk, add_product, remove_product, register_customer, remo
         except Exception as e:
             messagebox.showerror("Błąd", f"Błąd podczas pobierania statystyk: {str(e)}")
 
-    def check_availability_gui():
-        try:
-            product_id = entry_check_product_id.get().strip()
-            if not product_id:
-                messagebox.showerror("Błąd", "Proszę podać ID produktu.")
-                return
-            is_available = check_product_availability("database/products.xlsx", product_id)
-            if is_available:
-                messagebox.showinfo("Dostępność", f"Produkt o ID {product_id} jest dostępny!")
-            else:
-                messagebox.showwarning("Dostępność", f"Produkt o ID {product_id} nie jest dostępny lub nie istnieje.")
-        except Exception as e:
-            messagebox.showerror("Błąd", f"Błąd podczas sprawdzania dostępności: {str(e)}")
 
     def preview_file(file_path, title, columns):
         try:
@@ -182,7 +164,7 @@ def create_gui(root: tk.Tk, add_product, remove_product, register_customer, remo
         preview_file("database/products.xlsx", "Podgląd produktów", ["id", "name", "price", "stock"])
 
     def preview_customers():
-        preview_file("database/customer.csv", "Podgląd klientów", ["id", "name", "surname"])
+        preview_file("database/customer.csv", "Podgląd klientów", ["ID", "NAME", "E-MAIL", "PHONE"])
 
     # Elementy GUI - Dodaj produkt
     tk.Label(root, text="Dodaj produkt", font=("Arial", 12, "bold")).grid(row=0, column=0, columnspan=2, pady=5)
@@ -220,40 +202,36 @@ def create_gui(root: tk.Tk, add_product, remove_product, register_customer, remo
     tk.Label(root, text="Statystyki produktów", font=("Arial", 12, "bold")).grid(row=10, column=0, columnspan=2, pady=5)
     tk.Button(root, text="Pokaż statystyki", command=show_product_stats).grid(row=11, column=0, columnspan=2, pady=5)
 
-    # Elementy GUI - Sprawdź dostępność
-    tk.Label(root, text="Sprawdź dostępność produktu", font=("Arial", 12, "bold")).grid(row=12, column=0, columnspan=2, pady=5)
-    tk.Label(root, text="ID produktu:").grid(row=13, column=0, sticky="e")
-    entry_check_product_id = tk.Entry(root)
-    entry_check_product_id.grid(row=13, column=1, pady=2)
-    tk.Button(root, text="Sprawdź", command=check_availability_gui).grid(row=14, column=0, columnspan=2, pady=5)
-
     # Elementy GUI - Rejestracja klienta
     tk.Label(root, text="Rejestracja klienta", font=("Arial", 12, "bold")).grid(row=0, column=2, columnspan=2, pady=5)
-    tk.Label(root, text="Imię:").grid(row=1, column=2, sticky="e")
-    tk.Label(root, text="Nazwisko:").grid(row=2, column=2, sticky="e")
+    tk.Label(root, text="Imię i nazwisko:").grid(row=1, column=2, sticky="e")
+    tk.Label(root, text="E-mail:").grid(row=2, column=2, sticky="e")
+    tk.Label(root, text="Telefon (opcjonalnie):").grid(row=3, column=2, sticky="e")
 
     entry_customer_name = tk.Entry(root)
-    entry_customer_surname = tk.Entry(root)
+    entry_customer_email = tk.Entry(root)
+    entry_customer_phone = tk.Entry(root)
 
     entry_customer_name.grid(row=1, column=3, pady=2)
-    entry_customer_surname.grid(row=2, column=3, pady=2)
+    entry_customer_email.grid(row=2, column=3, pady=2)
+    entry_customer_phone.grid(row=3, column=3, pady=2)
 
-    tk.Button(root, text="Zarejestruj klienta", command=register_customer_gui).grid(row=3, column=2, columnspan=2, pady=10)
+    tk.Button(root, text="Zarejestruj klienta", command=register_customer_gui).grid(row=4, column=2, columnspan=2, pady=10)
 
     # Elementy GUI - Usuń klienta
-    tk.Label(root, text="Usuń klienta", font=("Arial", 12, "bold")).grid(row=4, column=2, columnspan=2, pady=5)
-    tk.Label(root, text="ID:").grid(row=5, column=2, sticky="e")
-    tk.Label(root, text="Imię:").grid(row=6, column=2, sticky="e")
+    tk.Label(root, text="Usuń klienta", font=("Arial", 12, "bold")).grid(row=5, column=2, columnspan=2, pady=5)
+    tk.Label(root, text="ID:").grid(row=6, column=2, sticky="e")
+    tk.Label(root, text="Imię i nazwisko:").grid(row=7, column=2, sticky="e")
 
     entry_remove_customer_id = tk.Entry(root)
     entry_remove_customer_name = tk.Entry(root)
 
-    entry_remove_customer_id.grid(row=5, column=3, pady=2)
-    entry_remove_customer_name.grid(row=6, column=3, pady=2)
+    entry_remove_customer_id.grid(row=6, column=3, pady=2)
+    entry_remove_customer_name.grid(row=7, column=3, pady=2)
 
-    tk.Button(root, text="Usuń klienta", command=remove_customer_gui).grid(row=7, column=2, columnspan=2, pady=10)
+    tk.Button(root, text="Usuń klienta", command=remove_customer_gui).grid(row=8, column=2, columnspan=2, pady=10)
 
     # Elementy GUI - Podgląd danych
-    tk.Label(root, text="Podgląd danych", font=("Arial", 12, "bold")).grid(row=8, column=2, columnspan=2, pady=5)
-    tk.Button(root, text="Podgląd produktów", command=preview_products).grid(row=9, column=2, columnspan=2, pady=5)
-    tk.Button(root, text="Podgląd klientów", command=preview_customers).grid(row=10, column=2, columnspan=2, pady=5)
+    tk.Label(root, text="Podgląd danych", font=("Arial", 12, "bold")).grid(row=9, column=2, columnspan=2, pady=5)
+    tk.Button(root, text="Podgląd produktów", command=preview_products).grid(row=10, column=2, columnspan=2, pady=5)
+    tk.Button(root, text="Podgląd klientów", command=preview_customers).grid(row=11, column=2, columnspan=2, pady=5)
