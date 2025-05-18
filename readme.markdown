@@ -1,7 +1,7 @@
 # Pakiet Frog - Żabka Online
 
 ## Opis
-Pakiet Frog to aplikacja do zarządzania sklepem online Żabka, umożliwiająca zarządzanie produktami, klientami oraz zakupami. Aplikacja zawiera intuicyjny interfejs graficzny, system rabatowy, podgląd danych, statystyki produktów, historię zakupów oraz aktualizację stanów magazynowych po zakupach. Ostatnia aktualizacja: 18 maja 2025, 23:48 CEST.
+Pakiet Frog to aplikacja do zarządzania sklepem online Żabka, umożliwiająca zarządzanie produktami, klientami oraz zakupami. Aplikacja zawiera intuicyjny interfejs graficzny, podgląd danych, statystyki produktów, historię zakupów oraz aktualizację stanów magazynowych po zakupach. Ostatnia aktualizacja: 18 maja 2025, 23:48 CEST.
 
 ## Struktura
 - `main.py`: Główny moduł uruchamiający aplikację z wyborem roli (Admin/Użytkownik).
