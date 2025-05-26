@@ -42,7 +42,6 @@ def remove_product(file_path, identifier, by='id'):
             return False
 
         if by == 'id':
-            # Convert identifier to int if it's a string to match numeric ID
             try:
                 identifier = int(identifier)
             except ValueError:
@@ -145,7 +144,6 @@ def get_all_products(file_path):
             print("Brak produktów.")
             return []
 
-        # Konwertuj DataFrame na listę słowników
         products = df.to_dict('records')
         return products
     except PermissionError as e:
