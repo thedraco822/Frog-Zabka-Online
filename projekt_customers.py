@@ -136,7 +136,6 @@ def purchase_products(cart, user):
         total_price = 0.0
         purchase_details = []
 
-        # Najpierw sprawdź dostępność wszystkich produktów
         for product_id, quantity in cart:
             product = products_df[products_df['id'] == product_id]
             if product.empty:
@@ -147,7 +146,6 @@ def purchase_products(cart, user):
                 print(f"Brak wystarczającej ilości produktu {product['name'].iloc[0]} (dostępne: {stock}).")
                 return None
 
-        # Jeśli wszystko dostępne, wykonaj zakup i aktualizuj stany
         for product_id, quantity in cart:
             product = products_df[products_df['id'] == product_id]
             product_name = product['name'].iloc[0]
@@ -155,12 +153,10 @@ def purchase_products(cart, user):
             total_price += price * quantity
             purchase_details.append(f"{product_name} (ID: {product_id}, Ilość: {quantity}, Cena: {price:.2f})")
 
-            # Aktualizuj stan magazynowy
             if not update_product_stock("database/products.xlsx", product_id, -quantity):
                 print(f"Nie udało się zaktualizować stanu dla produktu {product_name}")
                 return None
 
-        # Zapisz do historii
         os.makedirs(DATABASE_DIR, exist_ok=True)
         history_file = os.path.join(DATABASE_DIR, f"{user['ID']}_history.csv")
         now = datetime.datetime.now().isoformat(sep=' ', timespec='seconds')
