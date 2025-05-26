@@ -13,7 +13,6 @@ def create_gui(root: tk.Tk, add_product, remove_product, register_customer, remo
     """
     root.title("Żabka Online - Pakiet Frog")
 
-    # Funkcje pomocnicze GUI
     def add_product_gui():
         try:
             product_data = {
@@ -100,7 +99,6 @@ def create_gui(root: tk.Tk, add_product, remove_product, register_customer, remo
             if not stats:
                 messagebox.showerror("Błąd", "Nie udało się pobrać statystyk produktów. Plik products.xlsx może być pusty lub niedostępny.")
                 return
-            # Handle NaN values
             stats = {k: (v if pd.notna(v) else 0) for k, v in stats.items()}
             stats_message = (
                 f"Statystyki produktów:\n"
@@ -118,19 +116,16 @@ def create_gui(root: tk.Tk, add_product, remove_product, register_customer, remo
 
     def preview_file(file_path, title, columns):
         try:
-            # Create a new window
             preview_window = tk.Toplevel(root)
             preview_window.title(title)
             preview_window.geometry("600x400")
 
-            # Create Treeview
             tree = ttk.Treeview(preview_window, columns=columns, show="headings")
             for col in columns:
                 tree.heading(col, text=col)
                 tree.column(col, width=100, anchor="center")
             tree.pack(fill="both", expand=True, padx=10, pady=10)
 
-            # Add scrollbars
             scrollbar_y = ttk.Scrollbar(preview_window, orient="vertical", command=tree.yview)
             scrollbar_y.pack(side="right", fill="y")
             tree.configure(yscrollcommand=scrollbar_y.set)
@@ -139,7 +134,6 @@ def create_gui(root: tk.Tk, add_product, remove_product, register_customer, remo
             scrollbar_x.pack(side="bottom", fill="x")
             tree.configure(xscrollcommand=scrollbar_x.set)
 
-            # Read and display data
             if file_path.endswith(".xlsx"):
                 df = pd.read_excel(file_path, engine="openpyxl")
             else:
@@ -166,7 +160,6 @@ def create_gui(root: tk.Tk, add_product, remove_product, register_customer, remo
     def preview_customers():
         preview_file("database/customer.csv", "Podgląd klientów", ["ID", "NAME", "E-MAIL", "PHONE"])
 
-    # Elementy GUI - Dodaj produkt
     tk.Label(root, text="Dodaj produkt", font=("Arial", 12, "bold")).grid(row=0, column=0, columnspan=2, pady=5)
     tk.Label(root, text="ID:").grid(row=1, column=0, sticky="e")
     tk.Label(root, text="Nazwa:").grid(row=2, column=0, sticky="e")
@@ -185,7 +178,6 @@ def create_gui(root: tk.Tk, add_product, remove_product, register_customer, remo
 
     tk.Button(root, text="Dodaj produkt", command=add_product_gui).grid(row=5, column=0, columnspan=2, pady=10)
 
-    # Elementy GUI - Usuń produkt
     tk.Label(root, text="Usuń produkt", font=("Arial", 12, "bold")).grid(row=6, column=0, columnspan=2, pady=5)
     tk.Label(root, text="ID:").grid(row=7, column=0, sticky="e")
     tk.Label(root, text="Nazwa:").grid(row=8, column=0, sticky="e")
@@ -198,11 +190,9 @@ def create_gui(root: tk.Tk, add_product, remove_product, register_customer, remo
 
     tk.Button(root, text="Usuń produkt", command=remove_product_gui).grid(row=9, column=0, columnspan=2, pady=10)
 
-    # Elementy GUI - Statystyki produktów
     tk.Label(root, text="Statystyki produktów", font=("Arial", 12, "bold")).grid(row=10, column=0, columnspan=2, pady=5)
     tk.Button(root, text="Pokaż statystyki", command=show_product_stats).grid(row=11, column=0, columnspan=2, pady=5)
 
-    # Elementy GUI - Rejestracja klienta
     tk.Label(root, text="Rejestracja klienta", font=("Arial", 12, "bold")).grid(row=0, column=2, columnspan=2, pady=5)
     tk.Label(root, text="Imię i nazwisko:").grid(row=1, column=2, sticky="e")
     tk.Label(root, text="E-mail:").grid(row=2, column=2, sticky="e")
@@ -218,7 +208,6 @@ def create_gui(root: tk.Tk, add_product, remove_product, register_customer, remo
 
     tk.Button(root, text="Zarejestruj klienta", command=register_customer_gui).grid(row=4, column=2, columnspan=2, pady=10)
 
-    # Elementy GUI - Usuń klienta
     tk.Label(root, text="Usuń klienta", font=("Arial", 12, "bold")).grid(row=5, column=2, columnspan=2, pady=5)
     tk.Label(root, text="ID:").grid(row=6, column=2, sticky="e")
     tk.Label(root, text="Imię i nazwisko:").grid(row=7, column=2, sticky="e")
@@ -231,7 +220,6 @@ def create_gui(root: tk.Tk, add_product, remove_product, register_customer, remo
 
     tk.Button(root, text="Usuń klienta", command=remove_customer_gui).grid(row=8, column=2, columnspan=2, pady=10)
 
-    # Elementy GUI - Podgląd danych
     tk.Label(root, text="Podgląd danych", font=("Arial", 12, "bold")).grid(row=9, column=2, columnspan=2, pady=5)
     tk.Button(root, text="Podgląd produktów", command=preview_products).grid(row=10, column=2, columnspan=2, pady=5)
     tk.Button(root, text="Podgląd klientów", command=preview_customers).grid(row=11, column=2, columnspan=2, pady=5)
