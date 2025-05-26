@@ -11,7 +11,7 @@ def create_user_gui(root):
     root.title("Żabka Online - Panel Użytkownika")
     root.geometry("500x400")
     logged_in_user = None
-    cart = []  # Lista krotek (product_id, quantity)
+    cart = []
 
     def clear_window():
         """Czyści wszystkie widżety w oknie."""
@@ -98,12 +98,10 @@ def create_user_gui(root):
 
         tk.Button(root, text="Dodaj do koszyka", command=add_to_cart, font=("Arial", 10), width=15).pack(pady=5)
 
-        # Sekcja koszyka i historii
         tk.Label(root, text="Koszyk i historia", font=("Arial", 12, "bold")).pack(pady=10)
         tk.Button(root, text="Pokaż koszyk", command=show_cart, font=("Arial", 10), width=15).pack(pady=5)
         tk.Button(root, text="Pokaż historię", command=show_history, font=("Arial", 10), width=15).pack(pady=5)
 
-        # Przycisk wylogowania
         tk.Button(root, text="Wyloguj", command=show_login_screen, font=("Arial", 10), width=15).pack(pady=20)
 
     def show_cart():
