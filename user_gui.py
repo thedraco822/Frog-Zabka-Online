@@ -49,7 +49,6 @@ def create_user_gui(root):
         clear_window()
         tk.Label(root, text=f"Witaj, {logged_in_user['NAME']}!", font=("Arial", 14, "bold")).pack(pady=20)
 
-        # Sekcja zakupów
         tk.Label(root, text="Zakupy", font=("Arial", 12, "bold")).pack(pady=10)
         tk.Label(root, text="Wybierz produkt:", font=("Arial", 10)).pack()
         products = get_all_products("database/products.xlsx")
