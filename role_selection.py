@@ -22,7 +22,6 @@ def create_role_selection_window(root, admin_callback, user_callback):
         root.destroy()  
         user_callback()
 
-    # Elementy GUI
     tk.Label(root, text="Wybierz rolę:", font=("Arial", 14, "bold")).pack(pady=20)
 
     tk.Button(root, text="Admin", command=select_admin, width=15, font=("Arial", 12)).pack(pady=10)
