@@ -14,14 +14,13 @@ def create_role_selection_window(root, admin_callback, user_callback):
     root.title("Żabka Online - Wybór roli")
     root.geometry("300x200")
 
-    # Funkcje pomocnicze
     def select_admin():
-        root.destroy()  # Zamknij okno wyboru
-        admin_callback()  # Uruchom GUI dla admina
+        root.destroy() 
+        admin_callback() 
 
     def select_user():
-        root.destroy()  # Zamknij okno wyboru
-        user_callback()  # Uruchom GUI dla użytkownika
+        root.destroy()  
+        user_callback()
 
     # Elementy GUI
     tk.Label(root, text="Wybierz rolę:", font=("Arial", 14, "bold")).pack(pady=20)
